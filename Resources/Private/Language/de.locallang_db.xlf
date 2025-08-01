@@ -27,8 +27,8 @@
 				<target>PKCE aktivieren: Aktiviert den PKCE-Fluss. Code-Challenge und Code-Verifier werden mitgeschickt.</target>
 			</trans-unit>
 			<trans-unit id="settings.enableAuthentication">
-				<source>Frontend Authentication: Enable OpenID Connect authentication for the frontend.</source>
-				<target>Frontend-Authentifizierung: Aktivieren Sie die OpenID Connect-Authentifizierung für das Frontend.</target>
+				<source>Authentication: Enable OpenID Connect authentication for the  or backend.</source>
+				<target>Authentifizierung: Aktivieren Sie die OpenID Connect-Authentifizierung für das Frontend oder Backend.</target>
 			</trans-unit>
 			<trans-unit id="settings.enablePasswordCredentials">
 				<source>Enable username/password authentication: Enable authentication with username/password via OpenID Connect. e.g. via felogin</source>

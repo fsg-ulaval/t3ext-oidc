@@ -21,7 +21,7 @@
 				<source>Enable PKCE: Enable PKCE flow. Code challenge and code verifier will be sent along.</source>
 			</trans-unit>
 			<trans-unit id="settings.enableAuthentication">
-				<source>Authentication: Enable OpenID Connect authentication for the frontend.</source>
+				<source>Authentication: Enable OpenID Connect authentication for the frontend or backend.</source>
 			</trans-unit>
 			<trans-unit id="settings.enablePasswordCredentials">
 				<source>Enable username/password authentication: Enable authentication with username/password via OpenID Connect. e.g. via felogin</source>
