@@ -11,8 +11,8 @@ $tempColumns = [
         'config' => [
             'type' => 'input',
             'size' => 30,
-            'readOnly' => !($settings['frontendUserMustExistLocally'] ?? ''),
-        ],
+            'readOnly' => !($settings['userMustExistLocally'] ?? ''),
+        ]
     ],
 ];
 
