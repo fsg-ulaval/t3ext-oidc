@@ -721,7 +721,7 @@ class AuthenticationService extends \TYPO3\CMS\Core\Authentication\Authenticatio
             }
         }
 
-        $typo3[$field] = $mappedValue;
+        $typo3[$field] = $field === 'username' ? strtolower($mappedValue) : $mappedValue;
 
         return $typo3;
     }
