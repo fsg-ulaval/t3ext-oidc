@@ -78,3 +78,6 @@ userIDClaim = sub
 
 # cat=advanced//8; type=string; label=LLL:EXT:oidc/Resources/Private/Language/locallang_db.xlf:settings.adminRole
 adminRole =
+
+# cat=advanced//9; type=string; label=LLL:EXT:oidc/Resources/Private/Language/locallang_db.xlf:settings.maintainerRole
+maintainerRole =
