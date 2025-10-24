@@ -1,13 +1,14 @@
 <?php
+
 $EM_CONF[$_EXTKEY] = [
     'title' => 'OpenID Connect Authentication',
     'description' => 'This extension uses OpenID Connect to authenticate users.',
     'category' => 'services',
-    'author' => 'Xavier Perseguers, Markus Klein',
-    'author_company' => 'Causal Sàrl, Reelworx GmbH',
+    'author' => 'Xavier Perseguers, Markus Klein, Cyril Janody',
+    'author_company' => 'Causal Sàrl, Reelworx GmbH, FSG',
     'author_email' => 'xavier@causal.ch',
     'state' => 'stable',
-    'version' => '4.0.0',
+    'version' => '4.1.0',
     'constraints' => [
         'depends' => [
             'php' => '8.1.99-8.4.99',
