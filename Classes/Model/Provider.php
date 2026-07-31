@@ -12,7 +12,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * @phpstan-type MappingConfig array{be_users?: array<string, int|string>, fe_users?: array<string, int|string>}
  * @phpstan-type ProviderConfig array{
+ *     administratorRole: string,
  *     authorizeLanguageParameter: string,
+ *     backendUserMustExistLocally: int,
  *     clientKey: string,
  *     clientScopeSeparator: string,
  *     clientScopes: string,
@@ -28,12 +30,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *     endpointToken: string,
  *     endpointUserInfo: string,
  *     frontendUserMustExistLocally: int,
+ *     maintainerRole: string,
  *     mapping: MappingConfig,
  *     name: string,
  *     oauthProviderFactory: class-string<OAuthProviderFactoryInterface>,
+ *     reEnableBackendUsers: int,
  *     reEnableFrontendUsers: int,
  *     redirectUri: string,
  *     revokeAccessTokenAfterLogin: int,
+ *     undeleteBackendUsers: int,
  *     undeleteFrontendUsers: int,
  *     useRequestPathAuthentication: int,
  *     usersDefaultGroup: string,
@@ -42,7 +47,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class Provider
 {
+    private string $administratorRole = '';
     private string $authorizeLanguageParameter = 'language';
+    private bool $backendUserMustExistLocally = false;
     private string $clientKey = '';
     private string $clientScopeSeparator = ' ';
     private string $clientScopes = 'openid';
@@ -58,14 +65,17 @@ class Provider
     private string $endpointToken = '';
     private string $endpointUserInfo = '';
     private bool $frontendUserMustExistLocally = false;
+    private string $maintainerRole = '';
     /** @var MappingConfig */
     private array $mapping = [];
     private string $name;
     /** @var class-string<OAuthProviderFactoryInterface> */
     private string $oauthProviderFactory = GenericOAuthProviderFactory::class;
+    private bool $reEnableBackendUsers = false;
     private bool $reEnableFrontendUsers = false;
     private string $redirectUri = '';
     private bool $revokeAccessTokenAfterLogin = false;
+    private bool $undeleteBackendUsers = false;
     private bool $undeleteFrontendUsers = false;
     private bool $useRequestPathAuthentication = false;
     private string $usersDefaultGroup = '';
@@ -162,11 +172,21 @@ class Provider
     }
 
     /**
-     * @return MappingConfig
+     * @return string
      */
-    public function getMapping(): array
+    public function getAdministratorRole(): string
     {
-        return $this->mapping;
+        return $this->administratorRole;
+    }
+
+    public function getAuthorizeLanguageParameter(): string
+    {
+        return $this->authorizeLanguageParameter;
+    }
+
+    public function getClientKey(): string
+    {
+        return $this->clientKey;
     }
 
     public function getClientScopeSeparator(): string
@@ -182,21 +202,6 @@ class Provider
     public function getClientSecret(): string
     {
         return $this->clientSecret;
-    }
-
-    public function isDisableCSRFProtection(): bool
-    {
-        return $this->disableCSRFProtection;
-    }
-
-    public function isEnableCodeVerifier(): bool
-    {
-        return $this->enableCodeVerifier;
-    }
-
-    public function isEnablePasswordCredentials(): bool
-    {
-        return $this->enablePasswordCredentials;
     }
 
     public function getEndpointAuthorize(): string
@@ -224,9 +229,28 @@ class Provider
         return $this->endpointUserInfo;
     }
 
-    public function isFrontendUserMustExistLocally(): bool
+    /**
+     * @return string
+     */
+    public function getMaintainerRole(): string
     {
-        return $this->frontendUserMustExistLocally;
+        return $this->maintainerRole;
+    }
+
+    /**
+     * @return MappingConfig
+     */
+    public function getMapping(): array
+    {
+        return $this->mapping;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
     }
 
     public function getOauthProviderFactory(): string
@@ -234,29 +258,9 @@ class Provider
         return $this->oauthProviderFactory;
     }
 
-    public function isReEnableFrontendUsers(): bool
-    {
-        return $this->reEnableFrontendUsers;
-    }
-
     public function getRedirectUri(): string
     {
         return $this->redirectUri;
-    }
-
-    public function isRevokeAccessTokenAfterLogin(): bool
-    {
-        return $this->revokeAccessTokenAfterLogin;
-    }
-
-    public function isUndeleteFrontendUsers(): bool
-    {
-        return $this->undeleteFrontendUsers;
-    }
-
-    public function isUseRequestPathAuthentication(): bool
-    {
-        return $this->useRequestPathAuthentication;
     }
 
     public function getUsersDefaultGroup(): string
@@ -269,13 +273,67 @@ class Provider
         return $this->usersStoragePids;
     }
 
-    public function getClientKey(): string
+    /**
+     * @return bool
+     */
+    public function isBackendUserMustExistLocally(): bool
     {
-        return $this->clientKey;
+        return $this->backendUserMustExistLocally;
     }
 
-    public function getAuthorizeLanguageParameter(): string
+    public function isDisableCSRFProtection(): bool
     {
-        return $this->authorizeLanguageParameter;
+        return $this->disableCSRFProtection;
+    }
+
+    public function isEnableCodeVerifier(): bool
+    {
+        return $this->enableCodeVerifier;
+    }
+
+    public function isEnablePasswordCredentials(): bool
+    {
+        return $this->enablePasswordCredentials;
+    }
+
+    public function isFrontendUserMustExistLocally(): bool
+    {
+        return $this->frontendUserMustExistLocally;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isReEnableBackendUsers(): bool
+    {
+        return $this->reEnableBackendUsers;
+    }
+
+    public function isReEnableFrontendUsers(): bool
+    {
+        return $this->reEnableFrontendUsers;
+    }
+
+    public function isRevokeAccessTokenAfterLogin(): bool
+    {
+        return $this->revokeAccessTokenAfterLogin;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUndeleteBackendUsers(): bool
+    {
+        return $this->undeleteBackendUsers;
+    }
+
+    public function isUndeleteFrontendUsers(): bool
+    {
+        return $this->undeleteFrontendUsers;
+    }
+
+    public function isUseRequestPathAuthentication(): bool
+    {
+        return $this->useRequestPathAuthentication;
     }
 }

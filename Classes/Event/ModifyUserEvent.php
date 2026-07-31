@@ -21,23 +21,25 @@ use TYPO3\CMS\Core\Authentication\AbstractAuthenticationService;
 
 final class ModifyUserEvent
 {
+    protected AbstractAuthenticationService $authenticationService;
+    protected bool $isSystemMaintainer;
+    protected array $oidcResourceOwner;
     /**
-     * @var array fe_users record
+     * @var array fe_users/be_users record
      */
     protected array $user;
 
-    protected array $oidcResourceOwner;
-
-    protected AbstractAuthenticationService $authenticationService;
-
     public function __construct(
-        array $user,
+        array                         $user,
         AbstractAuthenticationService $authenticationService,
-        array $oidcResourceOwner
-    ) {
+        array                         $oidcResourceOwner,
+        bool                          $isSystemMaintainer
+    )
+    {
         $this->user = $user;
         $this->authenticationService = $authenticationService;
         $this->oidcResourceOwner = $oidcResourceOwner;
+        $this->isSystemMaintainer = $isSystemMaintainer;
     }
 
     public function getUser(): array
@@ -58,5 +60,15 @@ final class ModifyUserEvent
     public function getOidcResourceOwner(): array
     {
         return $this->oidcResourceOwner;
+    }
+
+    public function isSystemMaintainer(): bool
+    {
+        return $this->isSystemMaintainer;
+    }
+
+    public function setIsSystemMaintainer(bool $isSystemMaintainer): void
+    {
+        $this->isSystemMaintainer = $isSystemMaintainer;
     }
 }
