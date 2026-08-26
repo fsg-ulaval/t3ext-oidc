@@ -36,9 +36,6 @@ use RuntimeException;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- * Class OAuthService.
- */
 class OAuthService
 {
     protected ?AbstractProvider $provider = null;
@@ -138,7 +135,7 @@ class OAuthService
             'response_type' => 'code',
             'client_id' => $this->settings->oidcClientKey,
             'scope' => $this->settings->oidcClientScopes,
-            'redirect_uri' => $this->getRedirectUrl(),
+            'redirect_uri' => $this->settings->determineRedirectUri($this->request),
         ]);
 
         $result = GeneralUtility::makeInstance(RequestFactory::class)->request(
@@ -218,7 +215,7 @@ class OAuthService
             }
 
             $settings = $this->settings;
-            $settings->oidcRedirectUri = $this->getRedirectUrl();
+            $settings->oidcRedirectUri = $this->settings->determineRedirectUri($this->request);
 
             $factory = GeneralUtility::makeInstance($this->settings->oauthProviderFactory);
             $this->provider = $factory->create($settings);
@@ -241,20 +238,12 @@ class OAuthService
         }
 
         try {
-            $newAccessToken = $this->getProvider()->getAccessToken(new RefreshToken(), [
+            return $this->getProvider()->getAccessToken(new RefreshToken(), [
                 'refresh_token' => $accessToken->getRefreshToken(),
             ]);
-            return $newAccessToken;
         } catch (IdentityProviderException $e) {
             // TODO: log problem
             return null;
         }
-
-        return $accessToken;
-    }
-
-    protected function getRedirectUrl(): string
-    {
-        return $this->settings->oidcRedirectUri ?: $this->request->getAttribute('normalizedParams')->getSiteUrl();
     }
 }
